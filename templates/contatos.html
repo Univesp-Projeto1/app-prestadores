@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <title>Meus Contatos</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="container">
+  <div class="topbar">
+    <h1>Meus Contatos</h1>
+    <a class="link" href="{{ url_for('home') }}">⬅ Voltar</a>
+  </div>
+
+  <div class="cards">
+    {% for c in contatos %}
+      <div class="card">
+        <h2>{{ c.nome }}</h2>
+        <p><b>Especialidade:</b> {{ c.especialidade or "-" }}</p>
+
+        <div class="row">
+          {% if c.whatsapp %}
+            <a class="btn" target="_blank" href="https://wa.me/{{ c.whatsapp }}">WhatsApp</a>
+          {% else %}
+            <span class="muted">Sem WhatsApp</span>
+          {% endif %}
+
+          {% if c.email %}
+            <a class="btn" href="mailto:{{ c.email }}">E-mail</a>
+          {% else %}
+            <span class="muted">Sem e-mail</span>
+          {% endif %}
+        </div>
+      </div>
+    {% else %}
+      <p>Você ainda não tem contatos. Faça um agendamento para criar um contato automaticamente.</p>
+    {% endfor %}
+  </div>
+</body>
+</html>

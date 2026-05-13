@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <title>Meu Perfil</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="container">
+  <div class="topbar">
+    <h1>Meu Perfil</h1>
+    <a class="link" href="{{ url_for('home') }}">⬅ Voltar</a>
+  </div>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash">
+        {% for category, msg in messages %}
+          <p class="{{ category }}">{{ msg }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <form method="post" enctype="multipart/form-data" class="card">
+    <label>Nome</label>
+    <input name="nome" value="{{ user.nome }}" required>
+
+    <label>E-mail (não editável)</label>
+    <input value="{{ user.email }}" disabled>
+
+    <label>CEP</label>
+    <input name="cep" value="{{ user.cep or '' }}">
+
+    <label>Cidade</label>
+    <input name="cidade" value="{{ user.cidade or '' }}">
+
+    <label>Bairro</label>
+    <input name="bairro" value="{{ user.bairro or '' }}">
+
+    <label>Telefone</label>
+    <input name="telefone" value="{{ user.telefone or '' }}">
+
+    <label>WhatsApp</label>
+    <input name="whatsapp" value="{{ user.whatsapp or '' }}">
+
+    <label>Especialidade (prestador)</label>
+    <input name="especialidade" value="{{ user.especialidade or '' }}">
+
+    <label>Descrição (prestador)</label>
+    <textarea name="descricao" rows="3">{{ user.descricao or '' }}</textarea>
+
+    <label>Foto</label>
+    <input type="file" name="foto" accept=".png,.jpg,.jpeg,.webp">
+
+    {% if user.foto %}
+      <p><b>Foto atual:</b></p>
+      <img class="avatar" src="{{ url_for('uploads', filename=user.foto) }}">
+    {% endif %}
+
+    <button type="submit">Salvar</button>
+  </form>
+</body>
+</html>

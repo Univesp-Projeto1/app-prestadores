@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <title>Home</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="container">
+  <div class="topbar">
+    <h1>Olá, {{ user.nome }} 👋</h1>
+    <a class="link" href="{{ url_for('logout') }}">Sair</a>
+  </div>
+
+  <div class="grid">
+    <a class="btn" href="{{ url_for('feed') }}">🔎 Pesquisar por Prestador</a>
+    <a class="btn" href="{{ url_for('localizacao') }}">📍 Pesquisar por Localização</a>
+    <a class="btn" href="{{ url_for('contatos') }}">📇 Meus Contatos</a>
+    <a class="btn" href="{{ url_for('agendamentos') }}">📅 Meus Agendamentos</a>
+    <a class="btn" href="{{ url_for('perfil') }}">🙍 Meu Perfil</a>
+  </div>
+</body>
+</html>

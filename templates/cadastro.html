@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <title>Cadastro</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="container">
+  <h1>Cadastro</h1>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash">
+        {% for category, msg in messages %}
+          <p class="{{ category }}">{{ msg }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <form method="post" class="card">
+    <label>Nome</label>
+    <input name="nome" required>
+
+    <label>E-mail</label>
+    <input name="email" type="email" required>
+
+    <label>Senha</label>
+    <input name="senha" type="password" required>
+
+    <label>Tipo de conta</label>
+    <select name="role" required>
+      <option value="cliente">Cliente</option>
+      <option value="prestador">Prestador</option>
+    </select>
+
+    <hr>
+
+    <label>CEP</label>
+    <input name="cep" placeholder="00000-000">
+
+    <label>Cidade</label>
+    <input name="cidade" placeholder="São Paulo">
+
+    <label>Bairro</label>
+    <input name="bairro" placeholder="Centro">
+
+    <label>Telefone</label>
+    <input name="telefone" placeholder="(11) 99999-9999">
+
+    <label>WhatsApp</label>
+    <input name="whatsapp" placeholder="5511999999999 (apenas números)">
+
+    <label>Especialidade (prestador)</label>
+    <input name="especialidade" placeholder="Eletricista, Encanador...">
+
+    <label>Descrição (prestador)</label>
+    <textarea name="descricao" rows="3" placeholder="Fale sobre seus serviços..."></textarea>
+
+    <button type="submit">Criar conta</button>
+  </form>
+
+  <a class="link" href="{{ url_for('login') }}">Voltar ao Login</a>
+</body>
+</html>

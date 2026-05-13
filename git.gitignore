@@ -1,0 +1,19 @@
+# ambiente virtual
+.venv/
+
+# arquivos Python temporários
+__pycache__/
+*.pyc
+
+# banco de dados
+banco.db
+
+# uploads (fotos dos usuários)
+uploads/
+
+# arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# variáveis de ambiente
+.env
