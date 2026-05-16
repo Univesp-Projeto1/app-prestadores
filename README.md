@@ -1,122 +1,131 @@
 # App Prestadores de Serviços
 
-## 1. Visão Geral
-Este projeto é uma aplicação web para **cadastro, busca e gerenciamento de prestadores de serviços**. O objetivo é facilitar o encontro de profissionais (ex.: eletricista, pedreiro, encanador) por meio de uma interface simples e um banco de dados local.
+## Visão geral
 
-## 2. Funcionalidades
-- Cadastro de prestadores de serviço
-- Listagem de prestadores cadastrados
-- Busca/filtragem por tipo de serviço e/ou cidade (quando disponível)
-- Edição de dados cadastrados
-- Exclusão de registros
+O **App Prestadores de Serviços** é uma aplicação web em Flask criada para conectar clientes a profissionais de serviços domésticos e gerais. A proposta evolui a base já iniciada pela equipe para uma experiência próxima de plataformas como Parafuzo e GetNinjas: o cliente encontra profissionais, filtra por localização, consulta contatos, agenda serviços e acompanha seus dados de perfil.
 
-## 3. Tecnologias Utilizadas
-- **Backend:** Python (ex.: Flask)
-- **Frontend:** HTML e CSS
-- **Banco de Dados:** SQLite (arquivo local)
-- **Versionamento:** Git e GitHub
+A implementação atual preserva a estrutura original do projeto e amplia o visual e o fluxo de navegação sem substituir a ideia construída pela equipe.
 
-> **Observação:** Os nomes exatos de arquivos, rotas e comandos podem variar conforme a implementação do repositório.
+## Funcionalidades principais
 
-## 4. Estrutura do Projeto (exemplo)
-A estrutura abaixo ilustra uma organização comum para aplicações web em Python:
+| Área | Funcionalidade |
+|---|---|
+| Login e cadastro | Autenticação com e-mail e senha, cadastro como cliente ou prestador. |
+| Tela inicial | Central de navegação para busca, localização, contatos, agendamentos e perfil. |
+| Feed de prestadores | Cards de profissionais com busca por nome, especialidade ou descrição. |
+| Perfil do prestador | Modal com descrição, avaliação simulada, contador de serviços, contato e agendamento. |
+| Localização | Filtro por cidade e bairro usando os dados cadastrados. |
+| Meus contatos | Mini agenda com WhatsApp e e-mail dos profissionais contratados. |
+| Agendamentos | Lista de serviços reservados com detalhes expansíveis, status, valor e pagamento simulado. |
+| Meu perfil | Exibição e edição de nome, e-mail, CEP, cidade, bairro, contato, especialidade e foto. |
 
-```text
-app-prestadores/
-├── app.py               # Arquivo principal (inicialização do app)
-├── routes.py            # Rotas / controllers (se existir)
-├── models.py            # Modelos / entidades do banco (se existir)
-├── templates/           # Páginas HTML
-├── static/              # CSS/JS/imagens
-├── requirements.txt     # Dependências Python
-└── (banco).db           # Banco SQLite (pode variar de nome)
-```
+## Tecnologias utilizadas
 
-## 5. Banco de Dados (modelo sugerido)
-A aplicação tipicamente utiliza uma tabela para armazenar dados do prestador:
+| Camada | Tecnologia |
+|---|---|
+| Backend | Python 3 e Flask |
+| Servidor de produção | Gunicorn |
+| Frontend | HTML, CSS e JavaScript simples |
+| Banco de dados | SQLite |
+| Deploy | Preparado para Render/Railway ou hospedagem Python compatível com `Procfile` |
 
-**Prestador**
-- `id` (inteiro) — identificador
-- `nome` (texto) — nome do prestador
-- `servico` (texto) — tipo de serviço
-- `telefone` (texto) — contato
-- `cidade` (texto) — localização
+## Dados demonstrativos
 
-## 6. Instalação e Execução (Passo a Passo)
+Ao iniciar o projeto, se ainda não existir nenhum prestador cadastrado, o sistema cria automaticamente alguns profissionais de exemplo, como diarista, eletricista, montadora de móveis e encanador. Isso facilita a apresentação do marketplace sem apagar cadastros reais já existentes.
 
-### 6.1 Clonar o repositório
+| Tipo | E-mail | Senha | Observação |
+|---|---|---|---|
+| Prestador demonstrativo | `ana.diarista@example.com` | `123456` | Criado apenas se não houver prestadores no banco. |
+| Prestador demonstrativo | `carlos.eletricista@example.com` | `123456` | Criado apenas se não houver prestadores no banco. |
+| Prestador demonstrativo | `marina.montadora@example.com` | `123456` | Criado apenas se não houver prestadores no banco. |
+| Prestador demonstrativo | `joao.encanador@example.com` | `123456` | Criado apenas se não houver prestadores no banco. |
+
+## Como executar localmente
+
 ```bash
 git clone https://github.com/Univesp-Projeto1/app-prestadores.git
 cd app-prestadores
-```
-
-### 6.2 Criar e ativar ambiente virtual (recomendado)
-```bash
 python -m venv .venv
+source .venv/bin/activate  # Linux/macOS
+pip install -r requirements.txt
+python app.py
 ```
 
-**Windows**
+No Windows, a ativação do ambiente virtual pode ser feita com:
+
 ```bash
 .venv\Scripts\activate
 ```
 
-**Linux/macOS**
-```bash
-source .venv/bin/activate
+Depois, acesse no navegador:
+
+```text
+http://127.0.0.1:5000
 ```
 
-### 6.3 Instalar dependências
-```bash
-pip install -r requirements.txt
+## Como publicar como site permanente
+
+O projeto agora possui os arquivos necessários para publicação em plataformas de hospedagem Python:
+
+| Arquivo | Finalidade |
+|---|---|
+| `requirements.txt` | Lista Flask, Werkzeug e Gunicorn. |
+| `Procfile` | Define o comando de produção: `web: gunicorn app:app`. |
+| `render.yaml` | Permite criar um serviço web no Render a partir do repositório GitHub. |
+
+### Opção recomendada para apresentação acadêmica: Render
+
+1. Envie as alterações para o GitHub.
+2. Acesse [Render](https://render.com/).
+3. Crie um novo **Web Service** conectado ao repositório `Univesp-Projeto1/app-prestadores`.
+4. Use os comandos abaixo:
+
+| Campo | Valor |
+|---|---|
+| Build Command | `pip install -r requirements.txt` |
+| Start Command | `gunicorn app:app` |
+| Environment | Python |
+
+5. Configure a variável de ambiente `SECRET_KEY` com qualquer texto seguro.
+6. Publique o serviço e use a URL gerada pela plataforma.
+
+## Observação importante sobre permanência dos dados
+
+A aplicação usa **SQLite**, que é adequado para protótipo, demonstração e projeto acadêmico. Em hospedagens gratuitas, o arquivo do banco pode não ser ideal para produção real com muitos usuários. Para uma versão final mais robusta, recomenda-se migrar o banco para PostgreSQL ou MySQL.
+
+## Estrutura do projeto
+
+```text
+app-prestadores/
+├── app.py
+├── requirements.txt
+├── Procfile
+├── render.yaml
+├── templates/
+│   ├── login.html
+│   ├── cadastro.html
+│   ├── home.html
+│   ├── feed.html
+│   ├── prestadores.html
+│   ├── contatos.html
+│   ├── agendamentos.html
+│   └── perfil.html
+├── static/
+│   └── style.css
+└── uploads/
 ```
 
-### 6.4 Executar o projeto
-Escolha **um** dos comandos abaixo (depende de como o projeto foi implementado):
+## Próximas melhorias sugeridas
 
-**Opção A — execução direta**
-```bash
-python app.py
-```
-
-**Opção B — Flask**
-```bash
-flask run
-```
-
-### 6.5 Acessar no navegador
-Normalmente o projeto fica disponível em:
-- `http://127.0.0.1:5000`
-
-## 7. Como Usar (Manual Rápido)
-1. Abra a página inicial no navegador.
-2. Acesse a área de **Prestadores** para visualizar a lista.
-3. Use a opção **Cadastrar** para inserir um novo prestador.
-4. Utilize **Editar** para atualizar informações.
-5. Utilize **Excluir** para remover um cadastro.
-6. Caso exista busca/filtro, selecione o serviço e/ou cidade para encontrar prestadores com mais rapidez.
-
-## 8. Rotas/Endpoints (exemplo)
-> Esta seção é um modelo. Ajuste conforme as rotas reais do seu projeto.
-
-- `GET /` — Página inicial
-- `GET /prestadores` — Listagem
-- `GET /prestadores/novo` — Formulário de cadastro
-- `POST /prestadores` — Criação
-- `GET /prestadores/<id>` — Detalhes
-- `POST/PUT /prestadores/<id>` — Atualização
-- `POST/DELETE /prestadores/<id>` — Remoção
-
-## 9. Limitações Conhecidas
-- Banco local (SQLite) pode não ser ideal para muitos usuários simultâneos.
-- Pode não haver autenticação/autorização (login) dependendo da versão.
-
-## 10. Melhorias Futuras (sugestões)
-- Login e perfis (usuário/administrador)
-- Validações mais completas (telefone, campos obrigatórios)
-- Deploy em nuvem (Render, Railway, Vercel + API)
-- Interface mais moderna e responsiva
+| Prioridade | Melhoria |
+|---|---|
+| Alta | Migrar SQLite para PostgreSQL/MySQL em produção. |
+| Alta | Criar fluxo real de orçamento entre cliente e prestador. |
+| Média | Adicionar avaliações reais após serviço concluído. |
+| Média | Adicionar categorias oficiais de serviços. |
+| Média | Melhorar controle de permissões entre cliente e prestador. |
+| Baixa | Integrar pagamento real em ambiente seguro. |
 
 ---
 
-## Licença
-Defina a licença do projeto (ex.: MIT) ou informe “Uso acadêmico”.
+Uso acadêmico.

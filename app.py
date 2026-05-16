@@ -14,7 +14,7 @@ UPLOAD_FOLDER = os.path.join(APP_DIR, "uploads")
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "webp"}
 
 app = Flask(__name__)
-app.secret_key = "troque-essa-chave-em-producao"
+app.secret_key = os.environ.get("SECRET_KEY", "troque-essa-chave-em-producao")
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 
@@ -79,6 +79,40 @@ def init_db():
       FOREIGN KEY(prestador_id) REFERENCES users(id)
     );
     """)
+
+    prestadores_count = cur.execute("SELECT COUNT(*) AS total FROM users WHERE role = 'prestador'").fetchone()["total"]
+    if prestadores_count == 0:
+        exemplos = [
+            (
+                "Ana Souza", "ana.diarista@example.com", "prestador", "01310-100", "São Paulo", "Bela Vista",
+                "(11) 90000-1111", "5511900001111", "Diarista e passadeira",
+                "Atendimento residencial para limpeza completa, organização de ambientes e passadoria. Experiência com apartamentos, casas e escritórios pequenos."
+            ),
+            (
+                "Carlos Lima", "carlos.eletricista@example.com", "prestador", "04001-000", "São Paulo", "Vila Mariana",
+                "(11) 90000-2222", "5511900002222", "Eletricista residencial",
+                "Instalação de tomadas, chuveiros, luminárias, manutenção preventiva e pequenos reparos elétricos com orçamento combinado previamente."
+            ),
+            (
+                "Marina Rocha", "marina.montadora@example.com", "prestador", "13010-111", "Campinas", "Centro",
+                "(19) 90000-3333", "5519900003333", "Montadora de móveis",
+                "Montagem e desmontagem de móveis planejados, armários, mesas, camas e estantes, com atendimento por agendamento."
+            ),
+            (
+                "João Pereira", "joao.encanador@example.com", "prestador", "20031-000", "Rio de Janeiro", "Centro",
+                "(21) 90000-4444", "5521900004444", "Encanador e manutenção",
+                "Reparos hidráulicos, vazamentos, troca de torneiras, instalação de sifões e manutenção preventiva em residências."
+            ),
+        ]
+        for nome, email, role, cep, cidade, bairro, telefone, whatsapp, especialidade, descricao in exemplos:
+            cur.execute("""
+                INSERT OR IGNORE INTO users
+                (nome, email, password_hash, role, cep, cidade, bairro, telefone, whatsapp, especialidade, descricao)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, (
+                nome, email, generate_password_hash("123456"), role, cep, cidade, bairro,
+                telefone, whatsapp, especialidade, descricao
+            ))
 
     conn.commit()
     conn.close()
@@ -196,9 +230,10 @@ def feed():
         prestadores = conn.execute("""
             SELECT id, nome, especialidade, descricao, foto, cidade, bairro, whatsapp, email
             FROM users
-            WHERE role = 'prestador' AND lower(nome) LIKE ?
+            WHERE role = 'prestador'
+              AND (lower(nome) LIKE ? OR lower(especialidade) LIKE ? OR lower(descricao) LIKE ?)
             ORDER BY created_at DESC
-        """, (f"%{q}%",)).fetchall()
+        """, (f"%{q}%", f"%{q}%", f"%{q}%")).fetchall()
     else:
         prestadores = conn.execute("""
             SELECT id, nome, especialidade, descricao, foto, cidade, bairro, whatsapp, email
@@ -404,6 +439,8 @@ def uploads(filename):
     return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
 
 
+# Inicializa o banco também quando o app roda via Gunicorn em hospedagem.
+init_db()
+
 if __name__ == "__main__":
-    init_db()
     app.run(debug=True)
