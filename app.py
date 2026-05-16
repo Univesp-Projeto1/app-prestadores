@@ -156,13 +156,13 @@ def login():
 
         if not user or not check_password_hash(user["password_hash"], senha):
             flash("E-mail ou senha inválidos.", "error")
-            return render_template("login.html")
+            return render_template("auth/login.html")
 
         session["user_id"] = user["id"]
         session["role"] = user["role"]
         return redirect(url_for("home"))
 
-    return render_template("login.html")
+    return render_template("auth/login.html")
 
 @app.route("/cadastro", methods=["GET", "POST"])
 def cadastro():
@@ -183,7 +183,7 @@ def cadastro():
 
         if not nome or not email or not senha or role not in ("cliente", "prestador"):
             flash("Preencha nome, e-mail, senha e tipo (Cliente/Prestador).", "error")
-            return render_template("cadastro.html")
+            return render_template("auth/cadastro.html")
 
         password_hash = generate_password_hash(senha)
 
@@ -196,14 +196,14 @@ def cadastro():
             conn.commit()
         except sqlite3.IntegrityError:
             flash("Este e-mail já está cadastrado.", "error")
-            return render_template("cadastro.html")
+            return render_template("auth/cadastro.html")
         finally:
             conn.close()
 
         flash("Cadastro realizado com sucesso. Faça login!", "success")
         return redirect(url_for("login"))
 
-    return render_template("cadastro.html")
+    return render_template("auth/cadastro.html")
 
 @app.route("/logout")
 def logout():
@@ -216,7 +216,7 @@ def logout():
 @login_required
 def home():
     user = current_user()
-    return render_template("home.html", user=user)
+    return render_template("app/home.html", user=user)
 
 
 # ---------- Tela 3: Feed (Pesquisar Prestador) ----------
@@ -243,7 +243,7 @@ def feed():
         """).fetchall()
     conn.close()
 
-    return render_template("feed.html", prestadores=prestadores, q=q)
+    return render_template("app/feed.html", prestadores=prestadores, q=q)
 
 # Detalhes do prestador (para modal via JS)
 @app.route("/prestador/<int:prestador_id>")
@@ -339,7 +339,7 @@ def localizacao():
     prestadores = conn.execute(query, params).fetchall()
     conn.close()
 
-    return render_template("prestadores.html", prestadores=prestadores, cidade=cidade, bairro=bairro)
+    return render_template("app/prestadores.html", prestadores=prestadores, cidade=cidade, bairro=bairro)
 
 
 # ---------- Tela 5: Contatos ----------
@@ -348,7 +348,7 @@ def localizacao():
 def contatos():
     user = current_user()
     if user["role"] != "cliente":
-        return render_template("contatos.html", contatos=[], user=user)
+        return render_template("app/contatos.html", contatos=[], user=user)
 
     conn = get_db()
     lista = conn.execute("""
@@ -360,7 +360,7 @@ def contatos():
     """, (user["id"],)).fetchall()
     conn.close()
 
-    return render_template("contatos.html", contatos=lista, user=user)
+    return render_template("app/contatos.html", contatos=lista, user=user)
 
 
 # ---------- Tela 6: Agendamentos ----------
@@ -388,7 +388,7 @@ def agendamentos():
         """, (user["id"],)).fetchall()
 
     conn.close()
-    return render_template("agendamentos.html", agendamentos=ags, user=user)
+    return render_template("app/agendamentos.html", agendamentos=ags, user=user)
 
 
 # ---------- Tela 7: Perfil ----------
@@ -429,7 +429,7 @@ def perfil():
         flash("Perfil atualizado!", "success")
         return redirect(url_for("perfil"))
 
-    return render_template("perfil.html", user=user)
+    return render_template("app/perfil.html", user=user)
 
 
 # Servir uploads (dev)

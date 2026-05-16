@@ -1,0 +1,16 @@
+<div class="card provider-card">
+  <div class="provider-head">
+    <div class="avatar">{{ p.nome[:1]|upper }}</div>
+    <div>
+      <h2>{{ p.nome }}</h2>
+      <p class="provider-meta">{{ p.especialidade or 'Especialidade não informada' }}</p>
+    </div>
+  </div>
+  <p><b>Local:</b> {{ p.cidade or '-' }} / {{ p.bairro or '-' }}</p>
+  <p>{{ p.descricao or 'Prestador disponível para orçamento e agendamento.' }}</p>
+  <div class="badges">
+    <span class="badge green">Perfil verificado</span>
+    <span class="badge">Avaliação 4,7</span>
+  </div>
+  <button onclick="abrirPrestador({{ p.id }})">Ver perfil e agendar</button>
+</div>

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Início | App Prestadores{% endblock %}
+
+{% block content %}
+{% set page_title = 'Olá, ' ~ user.nome %}
+{% set page_subtitle = 'Encontre profissionais, compare opções e acompanhe seus serviços em um só lugar.' %}
+{% set topbar_actions = [{'href': url_for('logout'), 'label': 'Sair', 'class': 'secondary'}] %}
+{% include 'components/topbar.html' %}
+
+<section class="hero">
+  <div class="hero-panel">
+    <h2>Marketplace de serviços locais</h2>
+    <p class="lead">A proposta do projeto é conectar clientes a prestadores de várias áreas, como limpeza, manutenção, montagem, reformas e serviços domésticos.</p>
+    <div class="badges">
+      <span class="badge">Busca por nome</span>
+      <span class="badge">Busca por localização</span>
+      <span class="badge green">Contatos diretos</span>
+      <span class="badge yellow">Agendamentos</span>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Seu perfil</h2>
+    <p><b>Tipo:</b> {{ user.role|capitalize }}</p>
+    <p><b>Cidade:</b> {{ user.cidade or 'Não informada' }}</p>
+    <p><b>Bairro:</b> {{ user.bairro or 'Não informado' }}</p>
+    <a class="btn secondary" href="{{ url_for('perfil') }}">Ver meu perfil</a>
+  </div>
+</section>
+
+<div class="grid">
+  <a class="market-card" href="{{ url_for('feed') }}"><span class="icon">1</span><span><b>Pesquisar por prestador</b><br><span class="muted">Feed com cards, busca por nome, categoria ou especialidade.</span></span></a>
+  <a class="market-card" href="{{ url_for('localizacao') }}"><span class="icon">2</span><span><b>Pesquisar por localização</b><br><span class="muted">Filtre profissionais por cidade, bairro e CEP cadastrado.</span></span></a>
+  <a class="market-card" href="{{ url_for('contatos') }}"><span class="icon">3</span><span><b>Meus contatos</b><br><span class="muted">Mini agenda com WhatsApp, e-mail e profissionais salvos.</span></span></a>
+  <a class="market-card" href="{{ url_for('agendamentos') }}"><span class="icon">4</span><span><b>Meus agendamentos</b><br><span class="muted">Acompanhe datas, valores, status e detalhes do serviço.</span></span></a>
+  <a class="market-card" href="{{ url_for('perfil') }}"><span class="icon">5</span><span><b>Meu perfil</b><br><span class="muted">Dados pessoais e informações de atendimento.</span></span></a>
+</div>
+{% endblock %}

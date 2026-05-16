@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Meus Agendamentos | App Prestadores{% endblock %}
+
+{% block content %}
+{% set page_title = 'Meus agendamentos' %}
+{% set page_subtitle = 'Acompanhe serviços reservados, valores combinados e status de pagamento.' %}
+{% set topbar_actions = [{'href': url_for('home'), 'label': 'Voltar', 'class': 'secondary'}] %}
+{% include 'components/topbar.html' %}
+
+<div class="calendar">
+  <div class="day">1</div>
+  <div class="day">2</div>
+  <div class="day busy">3</div>
+  <div class="day">4</div>
+  <div class="day">5</div>
+  <div class="day busy">6</div>
+  <div class="day">7</div>
+</div>
+
+<div class="cards">
+  {% for a in agendamentos %}
+    <details class="card">
+      <summary>{{ a.data_hora }} · {{ a.status }} · Pago: {{ 'Sim' if a.pago else 'Não' }}</summary>
+      {% if user.role == 'cliente' %}
+        <p><b>Prestador:</b> {{ a.prestador_nome }}</p>
+      {% else %}
+        <p><b>Cliente:</b> {{ a.cliente_nome }}</p>
+      {% endif %}
+      <p><b>Descrição:</b> {{ a.descricao_servico or '-' }}</p>
+      <p><b>Valor:</b> R$ {{ a.valor or '0.00' }}</p>
+    </details>
+  {% else %}
+    <div class="card"><p>Nenhum agendamento ainda.</p></div>
+  {% endfor %}
+</div>
+{% endblock %}

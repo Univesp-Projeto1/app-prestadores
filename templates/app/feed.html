@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Pesquisar Prestadores | App Prestadores{% endblock %}
+
+{% block content %}
+{% set page_title = 'Pesquisar por prestador' %}
+{% set page_subtitle = 'Busque profissionais por nome, categoria, especialidade ou descrição do serviço.' %}
+{% set topbar_actions = [{'href': url_for('home'), 'label': 'Voltar', 'class': 'secondary'}] %}
+{% include 'components/topbar.html' %}
+
+<form method="get" class="search">
+  <input name="q" placeholder="Ex.: diarista, eletricista, montador..." value="{{ q }}">
+  <button type="submit">Buscar</button>
+</form>
+
+<div class="cards">
+  {% for p in prestadores %}
+    {% include 'components/provider_card.html' %}
+  {% else %}
+    <div class="card"><p>Nenhum prestador encontrado. Tente buscar por outra categoria ou localização.</p></div>
+  {% endfor %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+  {% include 'components/provider_modal.html' %}
+{% endblock %}

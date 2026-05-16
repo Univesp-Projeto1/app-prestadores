@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Meu Perfil | App Prestadores{% endblock %}
+
+{% block content %}
+{% set page_title = 'Meu perfil' %}
+{% set page_subtitle = 'Dados pessoais e informações usadas na busca por localização e contato.' %}
+{% set topbar_actions = [{'href': url_for('home'), 'label': 'Voltar', 'class': 'secondary'}] %}
+{% include 'components/topbar.html' %}
+
+<section class="card profile-grid">
+  <div>
+    {% if user.foto %}
+      <img class="avatar-profile" src="{{ url_for('uploads', filename=user.foto) }}">
+    {% else %}
+      <div class="avatar-profile avatar">{{ user.nome[:1]|upper }}</div>
+    {% endif %}
+  </div>
+  <div>
+    <h2>{{ user.nome }}</h2>
+    <div class="data-grid">
+      <div class="data-field"><span>E-mail</span><strong>{{ user.email }}</strong></div>
+      <div class="data-field"><span>Tipo</span><strong>{{ user.role|capitalize }}</strong></div>
+      <div class="data-field"><span>CEP</span><strong>{{ user.cep or '-' }}</strong></div>
+      <div class="data-field"><span>Cidade/Bairro</span><strong>{{ user.cidade or '-' }} / {{ user.bairro or '-' }}</strong></div>
+    </div>
+  </div>
+</section>
+
+<form method="post" enctype="multipart/form-data" class="card">
+  <h2>Atualizar dados</h2>
+  <label>Nome</label>
+  <input name="nome" value="{{ user.nome }}" required>
+  <label>E-mail (não editável)</label>
+  <input value="{{ user.email }}" disabled>
+  <label>CEP</label>
+  <input name="cep" value="{{ user.cep or '' }}">
+  <label>Cidade</label>
+  <input name="cidade" value="{{ user.cidade or '' }}">
+  <label>Bairro</label>
+  <input name="bairro" value="{{ user.bairro or '' }}">
+  <label>Telefone</label>
+  <input name="telefone" value="{{ user.telefone or '' }}">
+  <label>WhatsApp</label>
+  <input name="whatsapp" value="{{ user.whatsapp or '' }}">
+  <label>Especialidade ou categoria</label>
+  <input name="especialidade" value="{{ user.especialidade or '' }}">
+  <label>Descrição</label>
+  <textarea name="descricao" rows="4">{{ user.descricao or '' }}</textarea>
+  <label>Foto</label>
+  <input type="file" name="foto" accept=".png,.jpg,.jpeg,.webp">
+  <button type="submit">Salvar alterações</button>
+</form>
+{% endblock %}

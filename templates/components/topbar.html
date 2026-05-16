@@ -1,0 +1,13 @@
+<div class="topbar">
+  <div>
+    <h1>{{ page_title }}</h1>
+    {% if page_subtitle %}<p class="lead">{{ page_subtitle }}</p>{% endif %}
+  </div>
+  {% if topbar_actions %}
+    <div class="actions">
+      {% for action in topbar_actions %}
+        <a class="btn {{ action.class|default('secondary') }}" href="{{ action.href }}">{{ action.label }}</a>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>

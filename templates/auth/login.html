@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Entrar | App Prestadores{% endblock %}
+
+{% block content %}
+<section class="auth-layout">
+  <div class="auth-side">
+    <h1>App Prestadores</h1>
+    <p>Uma plataforma para conectar clientes a profissionais de serviços domésticos e gerais, com busca por especialidade, localização, contato direto e agendamento.</p>
+    <div class="badges">
+      <span class="badge green">Clientes</span>
+      <span class="badge">Prestadores</span>
+      <span class="badge yellow">Serviços locais</span>
+    </div>
+  </div>
+  <div class="auth-card">
+    <h2>Entrar na conta</h2>
+    <p class="muted">Acesse para pesquisar profissionais, salvar contatos e acompanhar agendamentos.</p>
+    <form method="post">
+      <label>E-mail</label>
+      <input name="email" type="email" required placeholder="seuemail@exemplo.com">
+      <label>Senha</label>
+      <input name="senha" type="password" required placeholder="Digite sua senha">
+      <button class="btn-block" type="submit">Entrar</button>
+    </form>
+    <hr>
+    <p class="muted">Ainda não tem uma conta?</p>
+    <a class="btn secondary btn-block" href="{{ url_for('cadastro') }}">Criar cadastro</a>
+  </div>
+</section>
+{% endblock %}

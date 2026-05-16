@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Cadastro | App Prestadores{% endblock %}
+
+{% block content %}
+{% set page_title = 'Criar cadastro' %}
+{% set page_subtitle = 'Cadastre-se como cliente ou prestador para participar do marketplace de serviços.' %}
+{% set topbar_actions = [{'href': url_for('login'), 'label': 'Voltar ao login', 'class': 'secondary'}] %}
+{% include 'components/topbar.html' %}
+
+<section class="hero">
+  <div class="hero-panel">
+    <h2>Escolha como deseja participar</h2>
+    <p class="lead">Clientes podem buscar profissionais e agendar serviços. Prestadores podem divulgar especialidades, localização, contatos e descrição do trabalho.</p>
+    <div class="badges">
+      <span class="badge">Diaristas</span>
+      <span class="badge">Eletricistas</span>
+      <span class="badge">Montadores</span>
+      <span class="badge">Encanadores</span>
+      <span class="badge green">E muito mais</span>
+    </div>
+  </div>
+  <form method="post" class="card">
+    <label>Nome</label>
+    <input name="nome" required placeholder="Nome completo">
+    <label>E-mail</label>
+    <input name="email" type="email" required placeholder="seuemail@exemplo.com">
+    <label>Senha</label>
+    <input name="senha" type="password" required placeholder="Crie uma senha">
+    <label>Tipo de conta</label>
+    <select name="role" required>
+      <option value="cliente">Cliente</option>
+      <option value="prestador">Prestador</option>
+    </select>
+    <hr>
+    <label>CEP</label>
+    <input name="cep" placeholder="00000-000">
+    <label>Cidade</label>
+    <input name="cidade" placeholder="São Paulo">
+    <label>Bairro</label>
+    <input name="bairro" placeholder="Centro">
+    <label>Telefone</label>
+    <input name="telefone" placeholder="(11) 99999-9999">
+    <label>WhatsApp</label>
+    <input name="whatsapp" placeholder="5511999999999">
+    <label>Especialidade ou categoria do serviço</label>
+    <input name="especialidade" placeholder="Diarista, eletricista, montador, encanador...">
+    <label>Descrição do serviço</label>
+    <textarea name="descricao" rows="4" placeholder="Conte brevemente quais serviços você oferece ou procura."></textarea>
+    <button class="btn-block" type="submit">Criar conta</button>
+  </form>
+</section>
+{% endblock %}

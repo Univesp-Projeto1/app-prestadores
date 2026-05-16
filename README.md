@@ -102,18 +102,28 @@ app-prestadores/
 ├── Procfile
 ├── render.yaml
 ├── templates/
-│   ├── login.html
-│   ├── cadastro.html
-│   ├── home.html
-│   ├── feed.html
-│   ├── prestadores.html
-│   ├── contatos.html
-│   ├── agendamentos.html
-│   └── perfil.html
+│   ├── base.html
+│   ├── auth/
+│   │   ├── login.html
+│   │   └── cadastro.html
+│   ├── app/
+│   │   ├── home.html
+│   │   ├── feed.html
+│   │   ├── prestadores.html
+│   │   ├── contatos.html
+│   │   ├── agendamentos.html
+│   │   └── perfil.html
+│   └── components/
+│       ├── flash_messages.html
+│       ├── topbar.html
+│       ├── provider_card.html
+│       └── provider_modal.html
 ├── static/
 │   └── style.css
 └── uploads/
 ```
+
+A pasta `templates/` foi organizada para reduzir repetição. O arquivo `base.html` concentra a estrutura comum das páginas; `auth/` contém as telas de login e cadastro; `app/` contém as telas internas; e `components/` contém partes reutilizáveis, como barra superior, mensagens, cards de prestadores e modal de perfil/agendamento.
 
 ## Próximas melhorias sugeridas
 

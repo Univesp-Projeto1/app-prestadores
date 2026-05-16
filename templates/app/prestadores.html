@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Pesquisar por Localização | App Prestadores{% endblock %}
+
+{% block content %}
+{% set page_title = 'Pesquisar por localização' %}
+{% set page_subtitle = 'Encontre profissionais próximos usando cidade e bairro cadastrados no banco.' %}
+{% set topbar_actions = [{'href': url_for('home'), 'label': 'Voltar', 'class': 'secondary'}] %}
+{% include 'components/topbar.html' %}
+
+<form method="get" class="search multi">
+  <input name="cidade" placeholder="Cidade" value="{{ cidade }}">
+  <input name="bairro" placeholder="Bairro" value="{{ bairro }}">
+  <button type="submit">Filtrar</button>
+</form>
+
+<div class="list">
+  {% for p in prestadores %}
+    <div class="list-item">
+      <div class="avatar-sm">{{ p.nome[:1]|upper }}</div>
+      <div>
+        <h2>{{ p.nome }}</h2>
+        <p class="muted">{{ p.especialidade or 'Serviço geral' }} · {{ p.cidade or '-' }} / {{ p.bairro or '-' }}</p>
+      </div>
+      <button onclick="abrirPrestador({{ p.id }})">Ver perfil</button>
+    </div>
+  {% else %}
+    <div class="card"><p>Nenhum prestador encontrado nessa localização.</p></div>
+  {% endfor %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+  {% include 'components/provider_modal.html' %}
+{% endblock %}

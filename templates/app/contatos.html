@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Meus Contatos | App Prestadores{% endblock %}
+
+{% block content %}
+{% set page_title = 'Meus contatos' %}
+{% set page_subtitle = 'Sua mini agenda com profissionais salvos após contato ou contratação.' %}
+{% set topbar_actions = [{'href': url_for('home'), 'label': 'Voltar', 'class': 'secondary'}] %}
+{% include 'components/topbar.html' %}
+
+<div class="list">
+  {% for c in contatos %}
+    <div class="list-item">
+      <div class="avatar-sm">{{ c.nome[:1]|upper }}</div>
+      <div>
+        <h2>{{ c.nome }}</h2>
+        <p class="muted">{{ c.especialidade or 'Especialidade não informada' }}</p>
+      </div>
+      <div class="actions">
+        {% if c.whatsapp %}
+          <a class="btn whatsapp" target="_blank" href="https://wa.me/{{ c.whatsapp }}">WhatsApp</a>
+        {% else %}
+          <span class="muted">Sem WhatsApp</span>
+        {% endif %}
+        {% if c.email %}
+          <a class="btn email" href="mailto:{{ c.email }}">E-mail</a>
+        {% else %}
+          <span class="muted">Sem e-mail</span>
+        {% endif %}
+      </div>
+    </div>
+  {% else %}
+    <div class="card"><p>Você ainda não tem contatos. Ao realizar um agendamento, o profissional será salvo automaticamente aqui.</p></div>
+  {% endfor %}
+</div>
+{% endblock %}
